@@ -11,6 +11,7 @@ import io.grpc.stub.StreamObserver;
 
 import gRPC.gRpcDomain.StudentGRpc;
 
+import java.lang.reflect.Type;
 import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +30,13 @@ public class StudentGRpcServiceImpl extends StudentGRpcServiceGrpc.StudentGRpcSe
         try{
             StudentGRpc studentGRpc = studentGRpcDao.findById(studentId);
 
-            System.out.println("Student object "+ studentGRpc);
+            System.out.println("Student object " + studentGRpc.getStudentMail());
+            System.out.println("Student object " + studentGRpc.getStudentMail().getClass());
+            System.out.println("Student object " + studentGRpc.getStudentMail().getClass().getName());
+
+
+
+
             StudentGRpcResponse studentGRpcResponse = StudentGRpcResponse.newBuilder()
                     .setStudentId(studentId)
                     .setStudentName(studentGRpc.getStudentName())

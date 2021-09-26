@@ -28,7 +28,6 @@ public class StudentGRpcDao {
         }
 
         // If everything worked fine, return the result.
-        System.out.println("Found student: " + student + "with id: " + studentId);
         return student;
     }
 
