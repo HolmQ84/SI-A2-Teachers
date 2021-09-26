@@ -12,7 +12,7 @@ public class StudentGRpcServer {
 
     public static void main(String[] args) {
         //Starter server på angivet port
-        Server server = ServerBuilder.forPort(8081)
+        Server server = ServerBuilder.forPort(8081) // Starts server on port 8081
                 .addService(new StudentGRpcServiceImpl())
                 .build();
         try {

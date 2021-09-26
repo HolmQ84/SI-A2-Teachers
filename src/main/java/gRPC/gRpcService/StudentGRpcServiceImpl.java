@@ -25,32 +25,26 @@ public class StudentGRpcServiceImpl extends StudentGRpcServiceGrpc.StudentGRpcSe
 
     @Override
     public void getStudentInfo(StudentGRpcRequest request, StreamObserver<StudentGRpcResponse> responseObserver) {
-        int studentId = (int) request.getStudentId();// the student ID should be passed with the request message
+        int studentId = (int) request.getStudentId();
 
         try{
             StudentGRpc studentGRpc = studentGRpcDao.findById(studentId);
 
-            System.out.println("Student object " + studentGRpc.getStudentMail());
-            System.out.println("Student object " + studentGRpc.getStudentMail().getClass());
-            System.out.println("Student object " + studentGRpc.getStudentMail().getClass().getName());
-
-
-
 
             StudentGRpcResponse studentGRpcResponse = StudentGRpcResponse.newBuilder()
                     .setStudentId(studentId)
-                    .setStudentName(studentGRpc.getStudentName())
-                    .setStudentMail(studentGRpc.getStudentMail())
+                    .setStudentName(studentGRpc.getStudentName()) //Using Getters from target folder
+                    .setStudentMail(studentGRpc.getStudentMail()) //Using Getters from target folder
                     .build();
 
-            System.out.println("Student repsone object: \n"+ studentGRpcResponse);
+            //System.out.println("Student repsone object: \n"+ studentGRpcResponse);
 
-            responseObserver.onNext(studentGRpcResponse);
+            responseObserver.onNext(studentGRpcResponse); // This send the data to port 8081 so bloom can fetch the data
             responseObserver.onCompleted();
         }catch (NoSuchElementException e){
             logger.log(Level.SEVERE, "NO STUDENT FOUND WITH THE STUDENT ID: "+studentId);
 
-            // If some error occurs we sent an error with the following status which is not_found
+            // If some error occurs with status not_found
             responseObserver.onError(Status.NOT_FOUND.asRuntimeException());
         }
     }
