@@ -1,0 +1,33 @@
+// Enabler proto 3 istedet for 2
+syntax = "proto3";
+
+// Stores Autogenered code from .proto file
+package com.studentAppicationGRpc.stubs.teacher;
+
+// With this line, I am saying that create multiple classes rather than a single class
+option java_multiple_files = true;
+
+import "google/protobuf/empty.proto";
+
+// This is the request message where it takes an id to find data
+message Teacher_Id{
+    int64 teacherId = 1;
+}
+
+// This is the response message
+message Teacher{
+    int64 teacherId = 1;
+    string name = 2;
+    int32 age = 3;
+    string mail = 4;
+    string subject = 5;
+}
+
+// This defines our service for the target folder
+service TeacherGRpcService{
+    rpc getTeacherById(Teacher_Id) returns (Teacher);
+    rpc getAllTeachers(google.protobuf.Empty) returns (stream Teacher);
+    rpc createTeacher(Teacher) returns (Teacher);
+    rpc updateTeacher(Teacher) returns (Teacher);
+    rpc deleteTeacher(Teacher) returns (google.protobuf.Empty);
+}

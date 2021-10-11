@@ -15,9 +15,11 @@ import javax.persistence.Id;
 @NoArgsConstructor
 @ToString
 @Entity
-public class StudentGRpc {
+public class TeacherGrpc {
     @Id
-    private int studentId;
-    private String studentName;
-    private String studentMail;
+    private int teacherId;
+    private String name;
+    private int age;
+    private String mail;
+    private String subject;
 }
