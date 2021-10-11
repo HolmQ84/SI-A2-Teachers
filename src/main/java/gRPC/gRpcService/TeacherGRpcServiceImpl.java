@@ -68,8 +68,15 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
     }
 
     public void createTeacher(Teacher teacher, StreamObserver<Teacher> responseObserver) {
-        Teacher teacher1 = teacherGRpcDao.createNewTeacher(teacher);
-        responseObserver.onNext(teacher1);
+        TeacherGrpc teacher1 = teacherGRpcDao.createNewTeacher(teacher);
+        Teacher teacherGRpcResponse = Teacher.newBuilder()
+                .setTeacherId(teacher1.getTeacherId())
+                .setName(teacher1.getName()) //Using Getters from target folder
+                .setAge(teacher1.getAge())
+                .setMail(teacher1.getMail()) //Using Getters from target folder
+                .setSubject(teacher1.getSubject()) //Using Getters from target folder
+                .build();
+        responseObserver.onNext(teacherGRpcResponse);
         responseObserver.onCompleted();
     }
 }

@@ -31,7 +31,7 @@ public class TeacherGRpcDao {
     }
 
     @Transactional
-    public Teacher createNewTeacher(Teacher teacher) {
+    public TeacherGrpc createNewTeacher(Teacher teacher) {
         String query = "INSERT INTO teacherGrpc (teacherId, name, age, mail, subject) VALUES (?,?,?,?,?)";
         EntityTransaction et = em.getTransaction();
         et.begin();
@@ -44,6 +44,12 @@ public class TeacherGRpcDao {
                 .executeUpdate();
         et.commit();
         counter++;
-        return teacher;
+        return new TeacherGrpc(
+                counter,
+                teacher.getName(),
+                teacher.getAge(),
+                teacher.getMail(),
+                teacher.getSubject()
+        );
     }
 }
