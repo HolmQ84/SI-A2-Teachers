@@ -2,7 +2,7 @@
 syntax = "proto3";
 
 // Stores Autogenered code from .proto file
-package com.studentAppicationGRpc.stubs.teacher;
+package com.teacherGrpc.stubs.teacher;
 
 // With this line, I am saying that create multiple classes rather than a single class
 option java_multiple_files = true;
@@ -24,7 +24,7 @@ message Teacher{
 }
 
 // This defines our service for the target folder
-service TeacherGRpcService{
+service TeacherGRpcService {
     rpc getTeacherById(Teacher_Id) returns (Teacher);
     rpc getAllTeachers(google.protobuf.Empty) returns (stream Teacher);
     rpc createTeacher(Teacher) returns (Teacher);

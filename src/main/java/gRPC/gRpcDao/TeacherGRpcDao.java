@@ -1,18 +1,15 @@
 package gRPC.gRpcDao;
 
-import com.studentAppicationGRpc.stubs.teacher.Teacher;
+import com.teacherGrpc.stubs.teacher.Teacher;
 import gRPC.gRpcDomain.TeacherGrpc;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
-import javax.persistence.PersistenceContext;
+import javax.persistence.*;
 import javax.transaction.Transactional;
 import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TeacherGRpcDao {
-
+    private int counter = 6;
     @PersistenceContext
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("teacher-grpc");
     EntityManager em = emf.createEntityManager();
@@ -35,7 +32,18 @@ public class TeacherGRpcDao {
 
     @Transactional
     public Teacher createNewTeacher(Teacher teacher) {
-        this.em.persist(teacher);
+        String query = "INSERT INTO teacherGrpc (teacherId, name, age, mail, subject) VALUES (?,?,?,?,?)";
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.createNativeQuery(query)
+                .setParameter(1, counter)
+                .setParameter(2, teacher.getName())
+                .setParameter(3, teacher.getAge())
+                .setParameter(4, teacher.getMail())
+                .setParameter(5, teacher.getSubject())
+                .executeUpdate();
+        et.commit();
+        counter++;
         return teacher;
     }
 }

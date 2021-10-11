@@ -1,9 +1,9 @@
 package gRPC.gRpcService;
 
 import com.google.protobuf.Empty;
-import com.studentAppicationGRpc.stubs.teacher.Teacher_Id;
-import com.studentAppicationGRpc.stubs.teacher.Teacher;
-import com.studentAppicationGRpc.stubs.teacher.TeacherGRpcServiceGrpc;
+import com.teacherGrpc.stubs.teacher.Teacher_Id;
+import com.teacherGrpc.stubs.teacher.Teacher;
+import com.teacherGrpc.stubs.teacher.TeacherGRpcServiceGrpc;
 
 import gRPC.gRpcDao.TeacherGRpcDao;
 import gRPC.gRpcDomain.TeacherGrpc;
