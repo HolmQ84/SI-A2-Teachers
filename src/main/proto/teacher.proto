@@ -23,11 +23,18 @@ message Teacher{
     string subject = 5;
 }
 
+message NewTeacher {
+    string name = 2;
+    int32 age = 3;
+    string mail = 4;
+    string subject = 5;
+}
+
 // This defines our service for the target folder
 service TeacherGRpcService {
     rpc getTeacherById(Teacher_Id) returns (Teacher);
     rpc getAllTeachers(google.protobuf.Empty) returns (stream Teacher);
-    rpc createTeacher(Teacher) returns (Teacher);
+    rpc createTeacher(NewTeacher) returns (Teacher);
     rpc updateTeacher(Teacher) returns (Teacher);
     rpc deleteTeacher(Teacher_Id) returns (google.protobuf.Empty);
 }

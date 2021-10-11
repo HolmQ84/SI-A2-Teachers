@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="Si - gRpc for studentAssignment" />
         <module name="SigRpcforstudentAssignment" />
+        <module name="SiAssignment2" />
       </profile>
     </annotationProcessing>
   </component>

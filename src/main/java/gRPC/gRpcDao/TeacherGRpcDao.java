@@ -1,7 +1,7 @@
 package gRPC.gRpcDao;
 
+import com.teacherGrpc.stubs.teacher.NewTeacher;
 import com.teacherGrpc.stubs.teacher.Teacher;
-import com.teacherGrpc.stubs.teacher.Teacher_Id;
 import gRPC.gRpcDomain.TeacherGrpc;
 
 import javax.persistence.*;
@@ -30,11 +30,11 @@ public class TeacherGRpcDao {
     }
 
     public List<TeacherGrpc> findAllTeachers() {
-        return (List<TeacherGrpc>) this.em.createQuery("select t from " + TeacherGrpc.class.getSimpleName() + " t").getResultList();
+        return (List<TeacherGrpc>) this.em.createQuery("SELECT t FROM " + TeacherGrpc.class.getSimpleName() + " t").getResultList();
     }
 
     @Transactional
-    public TeacherGrpc createNewTeacher(Teacher teacher) {
+    public TeacherGrpc createNewTeacher(NewTeacher teacher) {
         String query = "INSERT INTO teacherGrpc (teacherId, name, age, mail, subject) VALUES (?,?,?,?,?)";
         EntityTransaction et = em.getTransaction();
         et.begin();
@@ -58,11 +58,27 @@ public class TeacherGRpcDao {
 
     public String deleteTeacherDao(int teacherId) {
         TeacherGrpc teacher = this.em.find(TeacherGrpc.class, teacherId);
-        String query = "DELETE FROM teacherGrpc WHERE id = ?";
         EntityTransaction et = em.getTransaction();
         et.begin();
         em.remove(teacher);
         et.commit();
         return "Succesfully deleted entry.";
+    }
+
+    public TeacherGrpc updateTeacher(Teacher teacher) {
+        System.out.println(teacher);
+        TeacherGrpc thisTeacher = this.em.find(TeacherGrpc.class, (int) teacher.getTeacherId());
+        String query = "UPDATE teacherGrpc SET name = ?, age = ?, mail = ?, subject = ? WHERE teacherId = ?";
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.createNativeQuery(query)
+                .setParameter(1, teacher.getName())
+                .setParameter(2, teacher.getAge())
+                .setParameter(3, teacher.getMail())
+                .setParameter(4, teacher.getSubject())
+                .setParameter(5, teacher.getTeacherId())
+                .executeUpdate();
+        et.commit();
+        return thisTeacher;
     }
 }

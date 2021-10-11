@@ -1,6 +1,7 @@
 package gRPC.gRpcService;
 
 import com.google.protobuf.Empty;
+import com.teacherGrpc.stubs.teacher.NewTeacher;
 import com.teacherGrpc.stubs.teacher.Teacher_Id;
 import com.teacherGrpc.stubs.teacher.Teacher;
 import com.teacherGrpc.stubs.teacher.TeacherGRpcServiceGrpc;
@@ -25,6 +26,7 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
 
     @Override
     public void getTeacherById(Teacher_Id request, StreamObserver<Teacher> responseObserver) {
+        logger.log(Level.INFO, "getTeacherById method called from "+getClass());
         int teacherId = (int) request.getTeacherId();
 
         try{
@@ -52,8 +54,8 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
     }
 
     public void getAllTeachers(Empty request, StreamObserver<Teacher> responseObserver) {
+        logger.log(Level.INFO, "getAllTeachers method called from "+getClass());
         List<TeacherGrpc> teachers = teacherGRpcDao.findAllTeachers();
-        System.out.println(teachers.size());
         for (TeacherGrpc current: teachers) {
             Teacher teacherGRpcResponse = Teacher.newBuilder()
                     .setTeacherId(current.getTeacherId())
@@ -67,7 +69,8 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
         responseObserver.onCompleted();
     }
 
-    public void createTeacher(Teacher teacher, StreamObserver<Teacher> responseObserver) {
+    public void createTeacher(NewTeacher teacher, StreamObserver<Teacher> responseObserver) {
+        logger.log(Level.INFO, "createTeacher method called from "+getClass());
         TeacherGrpc teacher1 = teacherGRpcDao.createNewTeacher(teacher);
         Teacher teacherGRpcResponse = Teacher.newBuilder()
                 .setTeacherId(teacher1.getTeacherId())
@@ -82,10 +85,19 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
 
     @Override
     public void deleteTeacher(Teacher_Id request, StreamObserver<Empty> responseObserver) {
+        logger.log(Level.INFO, "deleteTeacher method called from "+getClass());
         int teacherId = (int) request.getTeacherId();
         String deleted = teacherGRpcDao.deleteTeacherDao(teacherId);
         System.out.println(deleted);
         responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
+
+    @Override
+    public void updateTeacher(Teacher teacher, StreamObserver<Teacher> responseObserver) {
+        logger.log(Level.INFO, "updateTeacher method called from "+getClass());
+        TeacherGrpc teacher1 = teacherGRpcDao.updateTeacher(teacher);
+        responseObserver.onNext(teacher);
         responseObserver.onCompleted();
     }
 }
