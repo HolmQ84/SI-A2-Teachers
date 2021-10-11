@@ -29,5 +29,5 @@ service TeacherGRpcService {
     rpc getAllTeachers(google.protobuf.Empty) returns (stream Teacher);
     rpc createTeacher(Teacher) returns (Teacher);
     rpc updateTeacher(Teacher) returns (Teacher);
-    rpc deleteTeacher(Teacher) returns (google.protobuf.Empty);
+    rpc deleteTeacher(Teacher_Id) returns (google.protobuf.Empty);
 }

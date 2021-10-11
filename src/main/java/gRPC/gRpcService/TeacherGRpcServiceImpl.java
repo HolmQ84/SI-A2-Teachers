@@ -79,4 +79,13 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
         responseObserver.onNext(teacherGRpcResponse);
         responseObserver.onCompleted();
     }
+
+    @Override
+    public void deleteTeacher(Teacher_Id request, StreamObserver<Empty> responseObserver) {
+        int teacherId = (int) request.getTeacherId();
+        String deleted = teacherGRpcDao.deleteTeacherDao(teacherId);
+        System.out.println(deleted);
+        responseObserver.onNext(Empty.newBuilder().build());
+        responseObserver.onCompleted();
+    }
 }

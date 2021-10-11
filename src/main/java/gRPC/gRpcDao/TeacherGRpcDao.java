@@ -1,6 +1,7 @@
 package gRPC.gRpcDao;
 
 import com.teacherGrpc.stubs.teacher.Teacher;
+import com.teacherGrpc.stubs.teacher.Teacher_Id;
 import gRPC.gRpcDomain.TeacherGrpc;
 
 import javax.persistence.*;
@@ -9,10 +10,12 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 public class TeacherGRpcDao {
-    private int counter = 6;
+
     @PersistenceContext
     EntityManagerFactory emf = Persistence.createEntityManagerFactory("teacher-grpc");
     EntityManager em = emf.createEntityManager();
+
+    private int counter = 6;
 
     public TeacherGrpc findById(int teacherId){
         TeacherGrpc teacher = this.em.find(TeacherGrpc.class, teacherId);
@@ -51,5 +54,15 @@ public class TeacherGRpcDao {
                 teacher.getMail(),
                 teacher.getSubject()
         );
+    }
+
+    public String deleteTeacherDao(int teacherId) {
+        TeacherGrpc teacher = this.em.find(TeacherGrpc.class, teacherId);
+        String query = "DELETE FROM teacherGrpc WHERE id = ?";
+        EntityTransaction et = em.getTransaction();
+        et.begin();
+        em.remove(teacher);
+        et.commit();
+        return "Succesfully deleted entry.";
     }
 }
