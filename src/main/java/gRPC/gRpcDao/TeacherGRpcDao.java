@@ -66,18 +66,14 @@ public class TeacherGRpcDao {
     }
 
     public TeacherGrpc updateTeacher(Teacher teacher) {
-        System.out.println(teacher);
-        TeacherGrpc thisTeacher = this.em.find(TeacherGrpc.class, (int) teacher.getTeacherId());
-        String query = "UPDATE teacherGrpc SET name = ?, age = ?, mail = ?, subject = ? WHERE teacherId = ?";
         EntityTransaction et = em.getTransaction();
         et.begin();
-        em.createNativeQuery(query)
-                .setParameter(1, teacher.getName())
-                .setParameter(2, teacher.getAge())
-                .setParameter(3, teacher.getMail())
-                .setParameter(4, teacher.getSubject())
-                .setParameter(5, teacher.getTeacherId())
-                .executeUpdate();
+        TeacherGrpc thisTeacher = this.em.find(TeacherGrpc.class, (int) teacher.getTeacherId());
+        thisTeacher.setName(teacher.getName());
+        thisTeacher.setAge(teacher.getAge());
+        thisTeacher.setMail(teacher.getMail());
+        thisTeacher.setSubject(teacher.getSubject());
+        em.persist(thisTeacher);
         et.commit();
         return thisTeacher;
     }

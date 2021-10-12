@@ -26,13 +26,9 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
 
     @Override
     public void getTeacherById(Teacher_Id request, StreamObserver<Teacher> responseObserver) {
-        logger.log(Level.INFO, "getTeacherById method called from "+getClass());
         int teacherId = (int) request.getTeacherId();
-
         try{
             TeacherGrpc teacherGrpc = teacherGRpcDao.findById(teacherId);
-
-
             Teacher teacherGRpcResponse = Teacher.newBuilder()
                     .setTeacherId(teacherId)
                     .setName(teacherGrpc.getName()) //Using Getters from target folder
@@ -40,21 +36,16 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
                     .setMail(teacherGrpc.getMail()) //Using Getters from target folder
                     .setSubject(teacherGrpc.getSubject()) //Using Getters from target folder
                     .build();
-
-            //System.out.println("Student repsone object: \n"+ studentGRpcResponse);
-
             responseObserver.onNext(teacherGRpcResponse); // This send the data to port 8081 so bloom can fetch the data
             responseObserver.onCompleted();
         }catch (NoSuchElementException e){
             logger.log(Level.SEVERE, "No Teacher was found with the ID of: "+teacherId);
-
-            // If some error occurs with status not_found
             responseObserver.onError(Status.NOT_FOUND.asRuntimeException());
         }
     }
 
+    @Override
     public void getAllTeachers(Empty request, StreamObserver<Teacher> responseObserver) {
-        logger.log(Level.INFO, "getAllTeachers method called from "+getClass());
         List<TeacherGrpc> teachers = teacherGRpcDao.findAllTeachers();
         for (TeacherGrpc current: teachers) {
             Teacher teacherGRpcResponse = Teacher.newBuilder()
@@ -69,8 +60,8 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
         responseObserver.onCompleted();
     }
 
+    @Override
     public void createTeacher(NewTeacher teacher, StreamObserver<Teacher> responseObserver) {
-        logger.log(Level.INFO, "createTeacher method called from "+getClass());
         TeacherGrpc teacher1 = teacherGRpcDao.createNewTeacher(teacher);
         Teacher teacherGRpcResponse = Teacher.newBuilder()
                 .setTeacherId(teacher1.getTeacherId())
@@ -85,7 +76,6 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
 
     @Override
     public void deleteTeacher(Teacher_Id request, StreamObserver<Empty> responseObserver) {
-        logger.log(Level.INFO, "deleteTeacher method called from "+getClass());
         int teacherId = (int) request.getTeacherId();
         String deleted = teacherGRpcDao.deleteTeacherDao(teacherId);
         System.out.println(deleted);
@@ -95,7 +85,6 @@ public class TeacherGRpcServiceImpl extends TeacherGRpcServiceGrpc.TeacherGRpcSe
 
     @Override
     public void updateTeacher(Teacher teacher, StreamObserver<Teacher> responseObserver) {
-        logger.log(Level.INFO, "updateTeacher method called from "+getClass());
         TeacherGrpc teacher1 = teacherGRpcDao.updateTeacher(teacher);
         responseObserver.onNext(teacher);
         responseObserver.onCompleted();
